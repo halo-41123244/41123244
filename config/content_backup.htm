@@ -952,9 +952,25 @@ field SFVec3f translation 0 0 0<br/>field SFRotation rotation 0 0 1 0<br/>field 
 <h2>練習檔</h2>
 <p><a href="https://drive.google.com/file/d/1MYuT5nJUfIasz4ixsidVVtSjaTbBGjXx/view?usp=sharing" title="練習和測試檔">Test</a></p>
 <h1>Webots模擬</h1>
+<h2>成品</h2>
 <p>畫圓</p>
 <p><img alt="" height="314" src="/images/circle.gif" width="412"/></p>
 <p></p>
 <p>畫方形</p>
 <p><img alt="" height="313" src="/images/square.gif" width="411"/></p>
 <p><a href="https://drive.google.com/file/d/1p1xWO6kJ50ZN4SyYKG0FIWJSegwOTjh4/view?usp=sharing">Webots模擬檔</a></p>
+<h2>模擬筆記</h2>
+<ul>
+<li style="text-align: justify;">匯入到 Webots 前，確保 CAD 模型的長度單位為「m」或於匯出時把所有座標縮放 0.001（mm → m）。若忽略，Webots 會把 mm 數值當成 m 讀取，導致幾何放大 1000 倍。 </li>
+<li style="text-align: justify;">Inventor更改單位方法  工具&gt;文件設定&gt;單位&gt;公釐改公尺</li>
+<li style="text-align: justify;">在 Inventor 中，Y 軸為垂直向上（Y-up）；<br data-end="1035" data-start="1032"/> 在 Webots 中，Z 軸為垂直向上（Z-up），若直接匯出模型不做旋轉，零件會躺平。<br data-end="1114" data-start="1111"/> 解法：在建立模型時按照Webots的座標軸。(或在 Webots <code data-end="1169" data-start="1149">Transform.rotation</code> 設定）。</li>
+</ul>
+<p>             <img alt="" height="233" src="/images/坐標軸區別.png" width="443"/></p>
+<ul>
+<li>在使用Webots時，把座標系統開  View&gt;Optional Rendering&gt;Show Coordinate System。</li>
+<li>練習Webots時可到<a href="https://cyberbotics.com/doc/reference/thanks">官方網站</a>查看每個功能，也可以<a href="https://www.bilibili.com/video/BV1jD4y1r7pn?spm_id_from=333.788.videopod.sections&amp;vd_source=021d9d1463e8077a843d3829f244ab4e">點這裡</a>查看詳細的中文教學影片。</li>
+</ul>
+<p style="text-align: justify;"></p>
+<p style="text-align: justify;"></p>
+<p></p>
+<p data-end="4159" data-start="4038"></p>
