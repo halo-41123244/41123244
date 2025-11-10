@@ -83,9 +83,131 @@
 <li data-end="1708" data-start="1637">
 <p data-end="1708" data-start="1640">保存世界，點擊 Play 運行模擬，觀察機器人的動作。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
 <p data-end="1803" data-start="1712"></p>
-</li>
+<img alt="" height="169" src="/images/1.gif" width="351"/></li>
 </ol><h2>Tutorial2</h2>
-<h2>Tutorial3</h2>
+<h4 data-end="80" data-start="71">教學目的</h4>
+<ul data-end="384" data-start="81">
+<li data-end="191" data-start="81">
+<p data-end="191" data-start="83">本章目的是在 Webots 中建立一個更具互動性的模擬環境：學會加入物件（如球）、設定物理特性，並「修改環境」以利後續機器人與環境互動。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="302" data-start="192">
+<p data-end="302" data-start="194">讓你熟悉節點（nodes）概念：知道「節點」在 Webots 世界 (.wbt) 中代表什麼、如何新增、隸屬關係如何、以及物理節點設定。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="384" data-start="303">
+<p data-end="384" data-start="305">學會使用 “DEF-USE” 機制來重用節點定義，從而減少重複、提升場景效率。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+<hr data-end="389" data-start="386"/>
+<h4 data-end="402" data-start="391">重點內容整理</h4>
+<ul data-end="1547" data-start="403">
+<li data-end="509" data-start="403">
+<p data-end="509" data-start="405">刪除預設的地板部件 (RectangleArena)，手動新增一個新的地板 (Floor) 並調整其尺寸為 1 m x 1 m。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="797" data-start="510">
+<p data-end="521" data-start="512">介紹關鍵節點：</p>
+<ul data-end="797" data-start="524">
+<li data-end="614" data-start="524">
+<p data-end="614" data-start="526">Solid 節點：代表剛體（rigid body），Webots 的物理引擎對剛體模擬較為適合。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="708" data-start="617">
+<p data-end="708" data-start="619">Shape、Sphere、Box 節點：分別用於定義視覺幾何與物理邊界，以及各種類型的幾何體。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="797" data-start="711">
+<p data-end="797" data-start="713">Physics 子節點：用於定義物體是否為「動態」（會受重力／碰撞影響）或「靜態」。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+</li>
+<li data-end="1116" data-start="798">
+<p data-end="826" data-start="800">在場景中新增一個球 (Sphere) 作為剛體：</p>
+<ul data-end="1116" data-start="829">
+<li data-end="955" data-start="829">
+<p data-end="955" data-start="831">建立 Solid → Shape → PBRAppearance → Sphere 節點。設定其 radius（如 0.05 m）、subdivision 等參數。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="1038" data-start="958">
+<p data-end="1038" data-start="960">使用 boundingObject 欄位用 Sphere 定義碰撞邊界。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"><a alt="https://mde.tw/cad2025/content/Tutorial2.html" class="flex h-4.5 overflow-hidden rounded-xl px-2 text-[9px] font-medium transition-colors duration-150 ease-in-out text-token-text-secondary! bg-[#F4F4F4]! dark:bg-[#303030]!" href="https://mde.tw/cad2025/content/Tutorial2.html" rel="noopener" target="_blank"><span class="relative start-0 bottom-0 flex h-full w-full items-center"><span class="flex h-4 w-full items-center justify-between overflow-hidden"><span class="max-w-[15ch] grow truncate overflow-hidden text-center"></span></span></span></a></span></span>將球放置於機器人前方，例如在位置 {0.2, 0, 0.2}。 </p>
+</li>
+</ul>
+</li>
+<li data-end="1339" data-start="1117">
+<p data-end="1135" data-start="1119">引入 DEF-USE 機制：</p>
+<ul data-end="1339" data-start="1138">
+<li data-end="1258" data-start="1138">
+<p data-end="1258" data-start="1140">在場景中將一個幾何（如 Sphere）用 DEF 標記一名稱（如 <code data-end="1188" data-start="1173">BALL_GEOMETRY</code>），然後在其他位置透過 USE 引用這定義，以避免重複。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="1339" data-start="1261">
+<p data-end="1339" data-start="1263">示範如何將先前兩個 Sphere 節點整合成一個定義 + 多處重用。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+</li>
+<li data-end="1431" data-start="1340">
+<p data-end="1431" data-start="1342">新增四面牆 (Box 幾何) 圍繞環境：這些牆設定為靜態物件（無物理效果），用以界定模擬區域。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="1547" data-start="1432">
+<p data-end="1547" data-start="1434">性能提示：剛體模擬計算成本較高，建議減少邊界物件數量、限制約束、提高 <code data-end="1494" data-start="1469">WorldInfo.basicTimeStep</code> 欄位以提升模擬速度。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+<hr data-end="1552" data-start="1549"/>
+<h4 data-end="1565" data-start="1554">教學流程摘要</h4>
+<ol data-end="3126" data-start="1566">
+<li data-end="1722" data-start="1566">
+<p data-end="1722" data-start="1569">開啟你在第 1 章創建的 <code data-end="1607" data-start="1582">my_first_simulation.wbt</code> 世界檔，確保模擬暫停、虛擬時間為 0。接著使用 <strong data-end="1657" data-start="1632">File → Save World As…</strong> 將其另存為 <code data-end="1679" data-start="1664">obstacles.wbt</code>。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="1816" data-start="1723">
+<p data-end="1816" data-start="1726">刪除預設的 <code data-end="1748" data-start="1732">RectangleArena</code> 節點：在場景樹或 3D 視圖選中該節點，然後刪除。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="1978" data-start="1817">
+<p data-end="1978" data-start="1820">新增一個 <code data-end="1832" data-start="1825">Floor</code> (Solid) 節點作為地板：在場景樹中加入 TexturedBackgroundLight → Floor (Solid) 節點。設定 size 欄位為 {1, 1} 以將地板調整為 1 m × 1 m。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="2352" data-start="1979">
+<p data-end="2002" data-start="1982">在地板之前、機器人前方新增一個球體：</p>
+<ul data-end="2352" data-start="2006">
+<li data-end="2082" data-start="2006">
+<p data-end="2082" data-start="2008">新增 Solid 節點 → 於其 children 欄位新增 Shape 節點，Shape 的 geometry 欄位新增 Sphere 節點；</p>
+</li>
+<li data-end="2165" data-start="2086">
+<p data-end="2165" data-start="2088">為 Shape 的 appearance 欄位新增 PBRAppearance 節點，並設定 metalness = 0、roughness = 1；</p>
+</li>
+<li data-end="2221" data-start="2169">
+<p data-end="2221" data-start="2171">在 Solid 的 boundingObject 欄位新增另一 Sphere 節點作為碰撞邊界；</p>
+</li>
+<li data-end="2263" data-start="2225">
+<p data-end="2263" data-start="2227">在 Solid 的 physics 欄位新增 Physics 節點。</p>
+</li>
+<li data-end="2352" data-start="2267">
+<p data-end="2352" data-start="2269">將這個球體翻譯 (translation) 到位置如 {0.2, 0, 0.2}。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+</li>
+<li data-end="2455" data-start="2353">
+<p data-end="2455" data-start="2356">調整球體細節：對兩個 Sphere 節點分別設置 radius = 0.05 m、subdivision = 2。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="2797" data-start="2456">
+<p data-end="2475" data-start="2459">使用 DEF-USE 機制：</p>
+<ul data-end="2797" data-start="2479">
+<li data-end="2527" data-start="2479">
+<p data-end="2527" data-start="2481">為第一個 Sphere 的欄位輸入 DEF 字串（如 <code data-end="2523" data-start="2508">BALL_GEOMETRY</code>）；</p>
+</li>
+<li data-end="2566" data-start="2531">
+<p data-end="2566" data-start="2533">刪除 boundingObject 裡的第二個 Sphere；</p>
+</li>
+<li data-end="2708" data-start="2570">
+<p data-end="2708" data-start="2572">在 boundingObject 中選擇 Add → USE / BALL_GEOMETRY。此後修改第一個 Sphere 的 radius 欄位會同步影響 boundingObject。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="2797" data-start="2712">
+<p data-end="2797" data-start="2714">再新增第二個球，使用相同參數但透過 Shape 節點來實現 DEF-USE 重用。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+</li>
+<li data-end="2908" data-start="2798">
+<p data-end="2908" data-start="2801">新增四面靜態牆壁來圍繞環境：使用單一 Box 幾何定義，並設定為靜態（無 physics 欄位或 physics = NULL）。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="2986" data-start="2909">
+<p data-end="2986" data-start="2912">保存模擬並可比較參考解答檔案：世界檔案可使用文字編輯器打開比對。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="3126" data-start="2987">
+<p data-end="3126" data-start="2990">結論：經過本章學習，能夠基於剛體 (Solid) 創建簡單環境、從場景樹視圖新增節點並修改欄位，熟悉了如 Solid、Shape、Sphere、Box 節點與 DEF-USE 機制。</p>
+</li>
+</ol><h2>Tutorial3</h2>
 <h2>Tutorial4</h2>
 <h2>Tutorial5</h2>
 <h2>Tutorial6</h2>
