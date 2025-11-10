@@ -800,3 +800,150 @@
 <p data-end="1816" data-start="1787">這為後續加入更多感測器、控制策略或更複雜機器人奠定了基礎。</p>
 </li>
 </ul><h2>Tutorial7</h2>
+<h4 data-end="92" data-start="82"><strong data-end="92" data-start="86">目標</strong></h4>
+<p data-end="163" data-start="93">將上一個教學中建立的四輪機器人從世界檔 (<code data-end="120" data-start="114">.wbt</code>) 移到 PROTO 檔案，方便在不同世界或多次使用同一機器人，而不需要複製整個定義。</p>
+<hr data-end="168" data-start="165"/>
+<h4 data-end="192" data-start="170"><strong data-end="192" data-start="174">1. 建立 PROTO 檔案</strong></h4>
+<ol data-end="293" data-start="194">
+<li data-end="227" data-start="194">
+<p data-end="227" data-start="197">開啟上一個世界檔 <code data-end="226" data-start="206">4_wheels_robot.wbt</code>。</p>
+</li>
+<li data-end="275" data-start="228">
+<p data-end="275" data-start="231">在 <code data-end="241" data-start="233">protos</code> 資料夾中建立新檔 <code data-end="274" data-start="251">FourWheelsRobot.proto</code>。</p>
+</li>
+<li data-end="293" data-start="276">
+<p data-end="293" data-start="279">PROTO 檔案的基本結構：</p>
+<table border="0" cellpadding="0" cellspacing="0" style="width: 138.4px;">
+<tbody>
+<tr>
+<td class="gutter" style="width: 7px;">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+</td>
+<td class="code" style="width: 127.4px;">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="js preprocessor">#VRML_SIM R2025a utf8</code></div>
+<div class="line number2 index1 alt1"><code class="js plain">PROTO protoName [</code></div>
+<div class="line number3 index2 alt2"><code class="js spaces">  </code><code class="js plain">protoFields</code></div>
+<div class="line number4 index3 alt1"><code class="js plain">]</code></div>
+<div class="line number5 index4 alt2"><code class="js plain">{</code></div>
+<div class="line number6 index5 alt1"><code class="js spaces">  </code><code class="js plain">protoBody</code></div>
+<div class="line number7 index6 alt2"><code class="js plain">}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<ul data-end="494" data-start="380">
+<li data-end="423" data-start="380">
+<p data-end="423" data-start="382"><code data-end="393" data-start="382">protoName</code>：PROTO 名稱，例如 <code data-end="423" data-start="406">FourWheelsRobot</code></p>
+</li>
+<li data-end="462" data-start="424">
+<p data-end="462" data-start="426"><code data-end="439" data-start="426">protoFields</code>：可修改的欄位（fields），目前可以先留空</p>
+</li>
+<li data-end="494" data-start="463">
+<p data-end="494" data-start="465"><code data-end="476" data-start="465">protoBody</code>：根節點內容（即 Robot 節點）</p>
+</li>
+</ul>
+<ol data-end="540" data-start="496" start="4">
+<li data-end="540" data-start="496">
+<p data-end="540" data-start="499">將原本世界檔中的 <code data-end="521" data-start="508">Robot { … }</code> 節點複製到 <code data-end="539" data-start="528">protoBody</code>。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h4 data-end="570" data-start="547"><strong data-end="570" data-start="551">2. 在世界中使用 PROTO</strong></h4>
+<ul data-end="685" data-start="572">
+<li data-end="598" data-start="572">
+<p data-end="598" data-start="574">儲存 PROTO 檔後，重新開啟 Webots。</p>
+</li>
+<li data-end="667" data-start="599">
+<p data-end="667" data-start="601">可以在 <code data-end="636" data-start="605">PROTO nodes (Current Project)</code> 中找到 <code data-end="658" data-start="641">FourWheelsRobot</code> 並新增到世界中。</p>
+</li>
+<li data-end="685" data-start="668">
+<p data-end="685" data-start="670">可以新增多個相同的機器人節點。</p>
+</li>
+</ul>
+<hr data-end="690" data-start="687"/>
+<h4 data-end="718" data-start="692"><strong data-end="718" data-start="696">3. 新增可修改欄位（Fields）</strong></h4>
+<ol data-end="744" data-start="720">
+<li data-end="744" data-start="720">
+<p data-end="744" data-start="723">編輯 PROTO 檔案，增加可調整的欄位：</p>
+field SFVec3f translation 0 0 0<br/>field SFRotation rotation 0 0 1 0<br/>field SFFloat bodyMass 1</li>
+<li data-end="744" data-start="720">最終 PROTO 範例：<br/>
+<div class="line number8 index7 alt1" style="text-align: justify;"></div>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+<div class="line number8 index7 alt1">8</div>
+<div class="line number9 index8 alt2">9</div>
+<div class="line number10 index9 alt1">10</div>
+<div class="line number11 index10 alt2">11</div>
+<div class="line number12 index11 alt1">12</div>
+<div class="line number13 index12 alt2">13</div>
+<div class="line number14 index13 alt1">14</div>
+<div class="line number15 index14 alt2">15</div>
+<div class="line number16 index15 alt1">16</div>
+<div class="line number17 index16 alt2">17</div>
+<div class="line number18 index17 alt1">18</div>
+<div class="line number19 index18 alt2">19</div>
+<div class="line number20 index19 alt1">20</div>
+<div class="line number21 index20 alt2">21</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="js preprocessor">#VRML_SIM R2025a utf8</code></div>
+<div class="line number2 index1 alt1"><code class="js plain">PROTO FourWheelsRobot [</code></div>
+<div class="line number3 index2 alt2"><code class="js spaces">  </code><code class="js plain">field SFVec3f    translation  0 0 0</code></div>
+<div class="line number4 index3 alt1"><code class="js spaces">  </code><code class="js plain">field SFRotation rotation     0 0 1 0</code></div>
+<div class="line number5 index4 alt2"><code class="js spaces">  </code><code class="js plain">field SFFloat    bodyMass     1</code></div>
+<div class="line number6 index5 alt1"><code class="js plain">]</code></div>
+<div class="line number7 index6 alt2"><code class="js plain">{</code></div>
+<div class="line number8 index7 alt1"><code class="js spaces">  </code><code class="js plain">Robot {</code></div>
+<div class="line number9 index8 alt2"><code class="js spaces">    </code><code class="js plain">translation IS translation</code></div>
+<div class="line number10 index9 alt1"><code class="js spaces">    </code><code class="js plain">rotation IS rotation</code></div>
+<div class="line number11 index10 alt2"><code class="js spaces">    </code><code class="js plain">children [</code></div>
+<div class="line number12 index11 alt1"><code class="js spaces">      </code><code class="js preprocessor"># list of children nodes</code></div>
+<div class="line number13 index12 alt2"><code class="js spaces">    </code><code class="js plain">]</code></div>
+<div class="line number14 index13 alt1"><code class="js spaces">    </code><code class="js plain">boundingObject USE BODY</code></div>
+<div class="line number15 index14 alt2"><code class="js spaces">    </code><code class="js plain">physics Physics {</code></div>
+<div class="line number16 index15 alt1"><code class="js spaces">      </code><code class="js plain">density -1</code></div>
+<div class="line number17 index16 alt2"><code class="js spaces">      </code><code class="js plain">mass IS bodyMass</code></div>
+<div class="line number18 index17 alt1"><code class="js spaces">    </code><code class="js plain">}</code></div>
+<div class="line number19 index18 alt2"><code class="js spaces">    </code><code class="js plain">controller </code><code class="js string">"four_wheels_collision_avoidance"</code></div>
+<div class="line number20 index19 alt1"><code class="js spaces">  </code><code class="js plain">}</code></div>
+<div class="line number21 index20 alt2"><code class="js plain">}</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<strong data-end="1611" data-start="1602"></strong></li>
+</ol>
+<h4 data-end="1611" data-start="1598"><strong data-end="1611" data-start="1602">4. 小結</strong></h4>
+<p data-end="1620" data-start="1613">你現在學會了：</p>
+<ol data-end="1713" data-start="1622">
+<li data-end="1648" data-start="1622">
+<p data-end="1648" data-start="1625">將 Webots 節點定義轉換成 PROTO。</p>
+</li>
+<li data-end="1679" data-start="1649">
+<p data-end="1679" data-start="1652">在 PROTO 中開放欄位（fields）供外部修改。</p>
+</li>
+<li data-end="1713" data-start="1680">
+<p data-end="1713" data-start="1683">連結 PROTO 欄位與內部節點屬性 (<code data-end="1707" data-start="1703">IS</code> 關鍵字)。</p>
+</li>
+</ol>
+<p data-end="1734" data-start="1715">這樣可以讓機器人更具模組化與可重用性。</p>

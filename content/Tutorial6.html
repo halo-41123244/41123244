@@ -143,7 +143,95 @@ img.add_border {
           
         </header>
     <div id="tipue_search_content">Tutorial5 << <a href='Tutorial5.html'>Previous</a> <a href='Tutorial7.html'>Next</a> >> Tutorial7<br /><h1>Tutorial6</h1>
-<br />Tutorial5 << <a href='Tutorial5.html'>Previous</a> <a href='Tutorial7.html'>Next</a> >> Tutorial7</div>
+<h4 data-end="125" data-start="116">教學目的</h4>
+<ul data-end="323" data-start="126">
+<li data-end="191" data-start="126">
+<p data-end="191" data-start="128">本章的目的是從頭開始創建一輛 <strong data-end="170" data-start="143">四輪機器人 (4‑Wheeled Robot)</strong>，包括車體、四個車輪、兩個距離感測器。</p>
+</li>
+<li data-end="252" data-start="192">
+<p data-end="252" data-start="194">讓你理解在 Webots 中從模型設計到控制器程式的完整流程：包括節點結構、車輪關節機構、感測器配置與程式控制。</p>
+</li>
+<li data-end="323" data-start="253">
+<p data-end="323" data-start="255">幫助你掌握建構機器人模型時 Solid／Joint／Device 節點的用途與組織方式，並在控制程式中驅動車輪、讀取感測器值並做出反應。</p>
+</li>
+</ul>
+<hr data-end="328" data-start="325"/>
+<h4 data-end="341" data-start="330">重點內容整理</h4>
+<ul data-end="1049" data-start="342">
+<li data-end="421" data-start="342">
+<p data-end="421" data-start="344">新模擬場景：將上一章結果保存為 <code data-end="381" data-start="360">4_wheeled_robot.wbt</code>，並刪除舊的 e‑puck／球體／啞鈴與其接觸屬性，只保留地面、牆壁、燈光。</p>
+</li>
+<li data-end="544" data-start="422">
+<p data-end="436" data-start="424">機器人模型設計要點：</p>
+<ul data-end="544" data-start="439">
+<li data-end="472" data-start="439">
+<p data-end="472" data-start="441">整車由 5 個 Solid 節點構成：車體 + 四個車輪。</p>
+</li>
+<li data-end="544" data-start="475">
+<p data-end="544" data-start="477">車輪透過 HingeJoint 節點與車體連接。Solid、Joint、Device 的階層與組織須遵循 Webots 資料結構。</p>
+</li>
+</ul>
+</li>
+<li data-end="607" data-start="545">
+<p data-end="607" data-start="547">車體設定：使用 Box 幾何，尺寸 (0.2, 0.1, 0.05) m，顏色紅色。車體節點需加入 Physics。</p>
+</li>
+<li data-end="716" data-start="608">
+<p data-end="716" data-start="610">車輪設定：每輪為 Cylinder 幾何，半徑 0.04 m、厚度 0.02 m。每輪透過 HingeJointParameters 指定 anchor、axis，其中軸為 (0,1,0)。車輪節點顏色綠色。</p>
+</li>
+<li data-end="814" data-start="717">
+<p data-end="814" data-start="719">感測器：新增兩個 DistanceSensor 節點為車體子節點，感測方向沿 +x 軸，並旋轉 0.3 rad 與車前方產生角度。感測器圖形用邊長 0.01 m 的 Cube，顏色藍色。</p>
+</li>
+<li data-end="937" data-start="815">
+<p data-end="937" data-start="817">控制器程式設計：導入 motor 模組，取得四輪 Motor 裝置，設定位置為無限旋轉 (<code data-end="889" data-start="862">setPosition(float('inf'))</code>)，然後設置速度。程式中讀取距離感測器值，若感測值低於某閾值表示前方有障礙，則啟動避障邏輯。</p>
+</li>
+<li data-end="1049" data-start="938">
+<p data-end="1049" data-start="940">測試與解決方案：可開啟 robot‑window 實時觀察感測器與馬達值。程式名稱例如 <code data-end="1018" data-start="984">four_wheeled_collision_avoidance</code>，並在 Robot 節點中設定其 controller 欄位。</p>
+</li>
+</ul>
+<hr data-end="1054" data-start="1051"/>
+<h4 data-end="1067" data-start="1056">教學流程摘要</h4>
+<ol data-end="1668" data-start="1068">
+<li data-end="1109" data-start="1068">
+<p data-end="1109" data-start="1071">開啟上一個世界檔案，另存為 <code data-end="1106" data-start="1085">4_wheeled_robot.wbt</code>。</p>
+</li>
+<li data-end="1163" data-start="1110">
+<p data-end="1163" data-start="1113">刪除不再使用的舊模型元素（e‑puck、球、啞鈴、接觸屬性），保留基本環境（地面、牆壁、燈光）。</p>
+</li>
+<li data-end="1198" data-start="1164">
+<p data-end="1198" data-start="1167">在場景樹末端添加一個 Robot 節點，並作為整車根節點。</p>
+</li>
+<li data-end="1372" data-start="1199">
+<p data-end="1372" data-start="1202">在 Robot 節點下，添加四個 HingeJoint 節點，每個 HingeJoint 的 endPoint 為一個 Solid → Shape (Cylinder) 用於車輪。設定 Cylinder 的尺寸、顏色、位置與旋轉。為 HingeJoint 設定 HingeJointParameters 的 anchor 與 axis。</p>
+</li>
+<li data-end="1420" data-start="1373">
+<p data-end="1420" data-start="1376">車輪 Motor 裝置命名為 <code data-end="1399" data-start="1391">wheel1</code> ~ <code data-end="1410" data-start="1402">wheel4</code>，取得並初始化。</p>
+</li>
+<li data-end="1485" data-start="1421">
+<p data-end="1485" data-start="1424">添加兩個 DistanceSensor 裝置，設置其名稱、位置、旋轉、圖形形狀（cube）、顏色。啟用它們以讀取距離。</p>
+</li>
+<li data-end="1560" data-start="1486">
+<p data-end="1560" data-start="1489">寫控制器程式：設定 TIME_STEP，如 64 ms。初始化 robot、感測器、馬達。主迴圈中讀取感測器值、判斷障礙、調整左右輪速度。</p>
+</li>
+<li data-end="1622" data-start="1561">
+<p data-end="1622" data-start="1564">保存檔案、設定 Robot 節點的 controller 欄位為控制器程式名稱，運行模擬並觀察機器人的避障行為。</p>
+</li>
+<li data-end="1668" data-start="1623">
+<p data-end="1668" data-start="1626">比對官方解答世界檔（位於 solution 資料夾）以確認模型設計與控制器程式正確。</p>
+</li>
+</ol>
+<hr data-end="1673" data-start="1670"/>
+<h4 data-end="1682" data-start="1675">結論</h4>
+<ul data-end="1816" data-start="1683">
+<li data-end="1714" data-start="1683">
+<p data-end="1714" data-start="1685">完成本章後，你能夠從零設計、建構並控制一輛四輪機器人。</p>
+</li>
+<li data-end="1784" data-start="1715">
+<p data-end="1784" data-start="1717">你已熟悉 Solid／Joint／Device 節點在 Webots 中的用途、如何構建機器人模型、以及如何編寫控制器驅動與感測。</p>
+</li>
+<li data-end="1816" data-start="1785">
+<p data-end="1816" data-start="1787">這為後續加入更多感測器、控制策略或更複雜機器人奠定了基礎。</p>
+</li>
+</ul><br />Tutorial5 << <a href='Tutorial5.html'>Previous</a> <a href='Tutorial7.html'>Next</a> >> Tutorial7</div>
         
     <!-- footer -->
       <div class="container">
