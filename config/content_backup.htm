@@ -325,6 +325,391 @@
 <img alt="" height="259" src="/images/3.png" width="375"/></li>
 </ul>
 <h2>Tutorial4</h2>
+<h4 data-end="126" data-start="117">教學目的</h4>
+<ul data-end="610" data-start="127">
+<li data-end="236" data-start="127">
+<p data-end="236" data-start="129">本章的目的是介紹 <strong data-end="176" data-start="138">Webots 控制器（controller）編程的基礎概念與實作流程</strong>。</p>
+</li>
+<li data-end="353" data-start="237">
+<p data-end="353" data-start="239">學會如何讓機器人 <strong data-end="263" data-start="248">感知環境（透過感測器）</strong> 並 <strong data-end="280" data-start="266">執行動作（透過馬達）</strong>，以實現簡單的自動行為控制。</p>
+</li>
+<li data-end="510" data-start="354">
+<p data-end="510" data-start="356">理解場景樹（Scene Tree）節點與控制器 API 之間的關聯，學會初始化與清理控制器、初始化設備、讀取感測值、控制致動器，並建立簡單的 <strong data-end="450" data-start="427">反饋迴路（feedback loop）</strong>。</p>
+</li>
+<li data-end="610" data-start="511">
+<p data-end="610" data-start="513">教學著重於 <strong data-end="537" data-start="519">Webots 功能的正確使用</strong>，不探討進階的機器人演算法。</p>
+</li>
+</ul>
+<hr data-end="615" data-start="612"/>
+<h4 data-end="628" data-start="617">重點內容整理</h4>
+<ul data-end="1534" data-start="629">
+<li data-end="874" data-start="629">
+<p data-end="645" data-start="631">新世界檔案與控制器建立：</p>
+<ul data-end="874" data-start="648">
+<li data-end="688" data-start="648">
+<p data-end="688" data-start="650">將前章的世界另存為 <code data-end="685" data-start="660">collision_avoidance.wbt</code>。</p>
+</li>
+<li data-end="772" data-start="691">
+<p data-end="772" data-start="693">透過 <strong data-end="734" data-start="696">File → New → New Robot Controller…</strong> 建立新控制器（例如 <code data-end="768" data-start="745">epuck_avoid_collision</code>）。</p>
+</li>
+<li data-end="874" data-start="775">
+<p data-end="874" data-start="777">在 e-puck 節點中修改 <code data-end="804" data-start="792">controller</code> 欄位以連結新控制器。</p>
+</li>
+</ul>
+</li>
+<li data-end="1086" data-start="875">
+<p data-end="891" data-start="877">e-puck 模型介紹：</p>
+<ul data-end="1086" data-start="894">
+<li data-end="939" data-start="894">
+<p data-end="939" data-start="896">配備 8 個紅外距離感測器（<code data-end="915" data-start="910">ps0</code> 到 <code data-end="923" data-start="918">ps7</code>），數值範圍 0–4096。</p>
+</li>
+<li data-end="962" data-start="942">
+<p data-end="962" data-start="944">感測器越接近障礙物，輸出值越大。</p>
+</li>
+<li data-end="1086" data-start="965">
+<p data-end="1086" data-start="967">由 DistanceSensor 節點建模，可透過 <code data-end="1019" data-start="993">webots/distance_sensor.h</code> API 存取。</p>
+</li>
+</ul>
+</li>
+<li data-end="1288" data-start="1087">
+<p data-end="1102" data-start="1089">控制器 API 概念：</p>
+<ul data-end="1288" data-start="1105">
+<li data-end="1133" data-start="1105">
+<p data-end="1133" data-start="1107">提供介面讓使用者能夠存取模擬中的感測器與執行器。</p>
+</li>
+<li data-end="1193" data-start="1136">
+<p data-end="1193" data-start="1138">每個設備透過名稱（<code data-end="1160" data-start="1147">WbDeviceTag</code>）呼叫 <code data-end="1187" data-start="1164">wb_robot_get_device()</code> 取得。</p>
+</li>
+<li data-end="1288" data-start="1196">
+<p data-end="1288" data-start="1198">感測器需透過 <code data-end="1225" data-start="1205">.enable(time_step)</code> 啟用。</p>
+</li>
+</ul>
+</li>
+<li data-end="1391" data-start="1289">
+<p data-end="1391" data-start="1291">程式語言可用 C、C++、Java、Python，範例使用 <strong data-end="1331" data-start="1321">Python</strong>。</p>
+</li>
+<li data-end="1534" data-start="1392">
+<p data-end="1401" data-start="1394">控制邏輯：</p>
+<ul data-end="1534" data-start="1404">
+<li data-end="1440" data-start="1404">
+<p data-end="1440" data-start="1406">機器人向前移動，若前方感測器偵測到障礙物，則轉向無障礙物的一側。</p>
+</li>
+<li data-end="1534" data-start="1443">
+<p data-end="1534" data-start="1445">以 UML 狀態機示意控制流程（感測 → 判斷 → 動作）。</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-end="1539" data-start="1536"/>
+<h4 data-end="1552" data-start="1541">教學流程摘要</h4>
+<p>Python 中沒有主函數，程序從文件的開始處開始執行：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_443551">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+<div class="line number8 index7 alt1">8</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py comments"># create the Robot instance.</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">robot </code><code class="py keyword">=</code> <code class="py plain">Robot()</code></div>
+<div class="line number3 index2 alt2"><code class="py comments"># initialize devices</code></div>
+<div class="line number4 index3 alt1"><code class="py comments"># feedback loop: step simulation until receiving an exit event</code></div>
+<div class="line number5 index4 alt2"><code class="py keyword">while</code> <code class="py plain">robot.step(TIME_STEP) !</code><code class="py keyword">=</code> <code class="py keyword">-</code><code class="py value">1</code><code class="py plain">:</code></div>
+<div class="line number6 index5 alt1"><code class="py spaces">    </code><code class="py comments"># read sensors outputs</code></div>
+<div class="line number7 index6 alt2"><code class="py spaces">    </code><code class="py comments"># process behavior</code></div>
+<div class="line number8 index7 alt1"><code class="py spaces">    </code><code class="py comments"># write actuators inputs</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>機器人設備由 WbDeviceTag 引用。WbDeviceTag 由 wb_robot_get_device 函數檢索。然後，它在每個涉及此設備的函數調用中用作第一個參數。像 DistanceSensor 這樣的傳感器在使用前必須啟用。enable 函數的第二個參數定義了傳感器的刷新率。</p>
+<p>在註釋 // initialize devices 之後，獲取並啟用距離傳感器，如下所示：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_560483">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+<div class="line number8 index7 alt1">8</div>
+<div class="line number9 index8 alt2">9</div>
+<div class="line number10 index9 alt1">10</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py comments"># initialize devices</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">ps </code><code class="py keyword">=</code> <code class="py plain">[]</code></div>
+<div class="line number3 index2 alt2"><code class="py plain">psNames </code><code class="py keyword">=</code> <code class="py plain">[</code></div>
+<div class="line number4 index3 alt1"><code class="py spaces">    </code><code class="py string">'ps0'</code><code class="py plain">, </code><code class="py string">'ps1'</code><code class="py plain">, </code><code class="py string">'ps2'</code><code class="py plain">, </code><code class="py string">'ps3'</code><code class="py plain">,</code></div>
+<div class="line number5 index4 alt2"><code class="py spaces">    </code><code class="py string">'ps4'</code><code class="py plain">, </code><code class="py string">'ps5'</code><code class="py plain">, </code><code class="py string">'ps6'</code><code class="py plain">, </code><code class="py string">'ps7'</code></div>
+<div class="line number6 index5 alt1"><code class="py plain">]</code></div>
+<div class="line number7 index6 alt2"> </div>
+<div class="line number8 index7 alt1"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(</code><code class="py value">8</code><code class="py plain">):</code></div>
+<div class="line number9 index8 alt2"><code class="py spaces">    </code><code class="py plain">ps.append(robot.getDevice(psNames[i]))</code></div>
+<div class="line number10 index9 alt1"><code class="py spaces">    </code><code class="py plain">ps[i].enable(TIME_STEP)</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>初始化設備後，初始化馬達：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_979047">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py plain">leftMotor </code><code class="py keyword">=</code> <code class="py plain">robot.getDevice(</code><code class="py string">'left wheel motor'</code><code class="py plain">)</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">rightMotor </code><code class="py keyword">=</code> <code class="py plain">robot.getDevice(</code><code class="py string">'right wheel motor'</code><code class="py plain">)</code></div>
+<div class="line number3 index2 alt2"><code class="py plain">leftMotor.setPosition(</code><code class="py functions">float</code><code class="py plain">(</code><code class="py string">'inf'</code><code class="py plain">))</code></div>
+<div class="line number4 index3 alt1"><code class="py plain">rightMotor.setPosition(</code><code class="py functions">float</code><code class="py plain">(</code><code class="py string">'inf'</code><code class="py plain">))</code></div>
+<div class="line number5 index4 alt2"><code class="py plain">leftMotor.setVelocity(</code><code class="py value">0.0</code><code class="py plain">)</code></div>
+<div class="line number6 index5 alt1"><code class="py plain">rightMotor.setVelocity(</code><code class="py value">0.0</code><code class="py plain">)</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>在主循環中，在註釋 # read sensors outputs 之後，按如下方式讀取距離傳感器的值：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_917630">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py comments"># read sensors outputs</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">psValues </code><code class="py keyword">=</code> <code class="py plain">[]</code></div>
+<div class="line number3 index2 alt2"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(</code><code class="py value">8</code><code class="py plain">):</code></div>
+<div class="line number4 index3 alt1"><code class="py spaces">    </code><code class="py plain">psValues.append(ps[i].getValue())</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>在主循環中，在註釋 # process behavior 之後，檢測是否發生碰撞（即距離傳感器返回的值大於閾值），如下所示：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_609374">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py comments"># detect obstacles</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">right_obstacle </code><code class="py keyword">=</code> <code class="py plain">psValues[</code><code class="py value">0</code><code class="py plain">] &gt; </code><code class="py value">80.0</code> <code class="py keyword">or</code> <code class="py plain">psValues[</code><code class="py value">1</code><code class="py plain">] &gt; </code><code class="py value">80.0</code> <code class="py keyword">or</code> <code class="py plain">psValues[</code><code class="py value">2</code><code class="py plain">] &gt; </code><code class="py value">80.0</code></div>
+<div class="line number3 index2 alt2"><code class="py plain">left_obstacle </code><code class="py keyword">=</code> <code class="py plain">psValues[</code><code class="py value">5</code><code class="py plain">] &gt; </code><code class="py value">80.0</code> <code class="py keyword">or</code> <code class="py plain">psValues[</code><code class="py value">6</code><code class="py plain">] &gt; </code><code class="py value">80.0</code> <code class="py keyword">or</code> <code class="py plain">psValues[</code><code class="py value">7</code><code class="py plain">] &gt; </code><code class="py value">80.0</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>最後，使用有關障礙物的信息來驅動車輪，如下所示：</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_432554">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+<div class="line number8 index7 alt1">8</div>
+<div class="line number9 index8 alt2">9</div>
+<div class="line number10 index9 alt1">10</div>
+<div class="line number11 index10 alt2">11</div>
+<div class="line number12 index11 alt1">12</div>
+<div class="line number13 index12 alt2">13</div>
+<div class="line number14 index13 alt1">14</div>
+<div class="line number15 index14 alt2">15</div>
+<div class="line number16 index15 alt1">16</div>
+<div class="line number17 index16 alt2">17</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py plain">MAX_SPEED </code><code class="py keyword">=</code> <code class="py value">6.28</code></div>
+<div class="line number2 index1 alt1"><code class="py plain">...</code></div>
+<div class="line number3 index2 alt2"><code class="py comments"># initialize motor speeds at 50% of MAX_SPEED.</code></div>
+<div class="line number4 index3 alt1"><code class="py plain">leftSpeed  </code><code class="py keyword">=</code> <code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number5 index4 alt2"><code class="py plain">rightSpeed </code><code class="py keyword">=</code> <code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number6 index5 alt1"><code class="py comments"># modify speeds according to obstacles</code></div>
+<div class="line number7 index6 alt2"><code class="py keyword">if</code> <code class="py plain">left_obstacle:</code></div>
+<div class="line number8 index7 alt1"><code class="py spaces">    </code><code class="py comments"># turn right</code></div>
+<div class="line number9 index8 alt2"><code class="py spaces">    </code><code class="py plain">leftSpeed  </code><code class="py keyword">=</code> <code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number10 index9 alt1"><code class="py spaces">    </code><code class="py plain">rightSpeed </code><code class="py keyword">=</code> <code class="py keyword">-</code><code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number11 index10 alt2"><code class="py keyword">elif</code> <code class="py plain">right_obstacle:</code></div>
+<div class="line number12 index11 alt1"><code class="py spaces">    </code><code class="py comments"># turn left</code></div>
+<div class="line number13 index12 alt2"><code class="py spaces">    </code><code class="py plain">leftSpeed  </code><code class="py keyword">=</code> <code class="py keyword">-</code><code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number14 index13 alt1"><code class="py spaces">    </code><code class="py plain">rightSpeed </code><code class="py keyword">=</code> <code class="py value">0.5</code> <code class="py keyword">*</code> <code class="py plain">MAX_SPEED</code></div>
+<div class="line number15 index14 alt2"><code class="py comments"># write actuators inputs</code></div>
+<div class="line number16 index15 alt1"><code class="py plain">leftMotor.setVelocity(leftSpeed)</code></div>
+<div class="line number17 index16 alt2"><code class="py plain">rightMotor.setVelocity(rightSpeed)</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<h4 data-end="3286" data-start="3279">結論</h4>
+<ul data-end="3613" data-start="3287">
+<li data-end="3322" data-start="3287">
+<p data-end="3322" data-start="3289">控制器的主函數是程式進入點（Python 則從檔案開頭執行）。</p>
+</li>
+<li data-end="3400" data-start="3323">
+<p data-end="3400" data-start="3325">在呼叫 <code data-end="3346" data-start="3329">wb_robot_init()</code> 之前不可使用任何 Webots API 函數，結束時需呼叫 <code data-end="3397" data-start="3377">wb_robot_cleanup()</code>。</p>
+</li>
+<li data-end="3447" data-start="3401">
+<p data-end="3447" data-start="3403">各設備以其節點名稱識別，並以 <code data-end="3441" data-start="3418">wb_robot_get_device()</code> 取得。</p>
+</li>
+<li data-end="3507" data-start="3448">
+<p data-end="3507" data-start="3450">每個控制器程式作為獨立進程執行，與 Webots 主程序之間透過 <code data-end="3498" data-start="3483">libController</code> 動態庫通信。</p>
+</li>
+</ul>
+</div>
+</div>
+<p></p>
 <h2>Tutorial5</h2>
+<h5 data-end="109" data-start="100">教學目的</h5>
+<ul data-end="403" data-start="110">
+<li data-end="210" data-start="110">
+<p data-end="210" data-start="112">本章的目的是透過在 Webots 中創建一個具有複雜形狀（由多個子幾何構成）的固體，來深入探索物理模擬的設定與控制。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="303" data-start="211">
+<p data-end="303" data-start="213">目標是能夠設計並建立一個由兩個球體與一根圓柱體構成的「啞鈴」模型，並了解其物理屬性如何影響模擬行為。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+<li data-end="403" data-start="304">
+<p data-end="403" data-start="306">精通 Solid 節點中多個 Shape 子節點的使用方法、Pose 節點的定位與變換、以及將圖形與物理形狀合併。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
+</li>
+</ul>
+<hr data-end="408" data-start="405"/>
+<h4 data-end="421" data-start="410">重點內容整理</h4>
+<ul data-end="1139" data-start="422">
+<li data-end="498" data-start="422">
+<h4 data-end="498" data-start="424">從上一章的世界檔案另存為 <code data-end="457" data-start="437">compound_solid.wbt</code>。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+<li data-end="696" data-start="499">
+<h4 data-end="528" data-start="501">創建一個複合固體（Compound Solid）：</h4>
+<ul data-end="696" data-start="531">
+<li data-end="613" data-start="531">
+<h4 data-end="613" data-start="533">使用一個 Solid 節點，內部包含多個 Shape 節點來定義圖形與物理外形。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+<li data-end="696" data-start="616">
+<h4 data-end="696" data-start="618">每個 Shape 節點可用 Pose 子節點調整其 <strong data-end="655" data-start="644">相對位置與方向</strong>。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+</ul>
+</li>
+<li data-end="957" data-start="697">
+<h4 data-end="708" data-start="699">啞鈴模型實作：</h4>
+<ul data-end="957" data-start="711">
+<li data-end="793" data-start="711">
+<h4 data-end="793" data-start="713">圓柱體（Cylinder）作為啞鈴桿：長度為 0.1 m，半徑為 0.01 m。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+<li data-end="888" data-start="796">
+<h4 data-end="888" data-start="798">兩個球體（Sphere）作為啞鈴重量端：球的半徑為 0.03 m，subdivision 設為 2。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+<li data-end="957" data-start="891">
+<h4 data-end="957" data-start="893">將兩個球體透過其 Pose 節點移動至桿的兩端。 <span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+</ul>
+</li>
+<li data-end="1139" data-start="958">
+<h4 data-end="967" data-start="960">補充說明：</h4>
+<ul data-end="1139" data-start="970">
+<li data-end="1060" data-start="970">
+<h4 data-end="1060" data-start="972">Solid 節點可包含不少於一個 Shape，且這些 Shape 可同時定義視覺與物理邊界。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+<li data-end="1139" data-start="1063">
+<h4 data-end="1139" data-start="1065">Group 節點亦可用來將多個節點組合起來，以構建更複雜的結構。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></h4>
+</li>
+</ul>
+</li>
+</ul>
+<hr data-end="1144" data-start="1141"/>
+<h4 data-end="1157" data-start="1146">教學流程摘要</h4>
+<ol data-end="1564" data-start="1158">
+<li data-end="1244" data-start="1158">
+<p data-end="1244" data-start="1161">開啟你在 Tutorial 4 所創建的世界，然後使用 <strong data-end="1214" data-start="1189">File → Save World As…</strong> 將其另存為 <code data-end="1241" data-start="1221">compound_solid.wbt</code>。</p>
+</li>
+<li data-end="1278" data-start="1245">
+<p data-end="1278" data-start="1248">在場景中新增一個 Solid 節點作為啞鈴的初始父節點。</p>
+</li>
+<li data-end="1340" data-start="1279">
+<p data-end="1340" data-start="1282">在該 Solid 裡新增一個 Cylinder Shape 節點：設定長度為 0.1 m、半徑為 0.01 m。</p>
+</li>
+<li data-end="1408" data-start="1341">
+<p data-end="1408" data-start="1344">在同一 Solid 中新增兩個 Sphere Shape 節點：設定球半徑為 0.03 m、subdivision = 2。</p>
+</li>
+<li data-end="1474" data-start="1409">
+<p data-end="1474" data-start="1412">對每個球體 Shape，再各自使用一個 Pose 節點來設定其 <strong data-end="1459" data-start="1444">translation</strong>（位置）使其位於桿的兩端。</p>
+</li>
+<li data-end="1519" data-start="1475">
+<p data-end="1519" data-start="1478">儲存並執行模擬，觀察固體是否如預期地構成啞鈴結構，同時確認其物理互動是否合理。</p>
+</li>
+<li data-end="1564" data-start="1520">
+<p data-end="1564" data-start="1523">（可選）打開世界檔案為文字檢視，了解 Solid 與其子節點的階層與欄位定義。</p>
+</li>
+</ol>
+<hr data-end="1569" data-start="1566"/>
+<h4 data-end="1578" data-start="1571">結論</h4>
+<ul data-end="1765" data-start="1579">
+<li data-end="1657" data-start="1579">
+<p data-end="1657" data-start="1581">本章你學會如何在 Webots 裡構建「多幾何構成的固體」，也了解了 Solid、Shape、Pose、Group 等節點在場景中的組合方式與作用。</p>
+</li>
+<li data-end="1717" data-start="1658">
+<p data-end="1717" data-start="1660">你已掌握構造複合固體所需的關鍵參數（如長度、半徑、subdivision、translation）與節點關聯。</p>
+</li>
+<li data-end="1765" data-start="1718">
+<p data-end="1765" data-start="1720">下一步，你可以將這些結構應用於設計更複雜的模擬場景，並開始加入動力學與碰撞互動的設定。</p>
+<img alt="" height="244" src="/images/5.png" width="385"/></li>
+</ul>
 <h2>Tutorial6</h2>
 <h2>Tutorial7</h2>
