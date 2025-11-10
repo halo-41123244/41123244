@@ -81,10 +81,10 @@
 </ul>
 </li>
 <li data-end="1708" data-start="1637">
-<p data-end="1708" data-start="1640">保存世界，點擊 Play 運行模擬，觀察機器人的動作。<span class="" data-state="closed"><span class="ms-1 inline-flex max-w-full items-center relative top-[-0.094rem] animate-[show_150ms_ease-in]" data-testid="webpage-citation-pill"></span></span></p>
-<p data-end="1803" data-start="1712"></p>
-<img alt="" height="169" src="/images/1.gif" width="351"/></li>
-</ol><h2>Tutorial2</h2>
+<p data-end="1708" data-start="1640">保存世界，點擊 Play 運行模擬，觀察機器人的動作。</p>
+<img alt="" height="186" src="/images/1.gif" width="387"/></li>
+</ol>
+<h2>Tutorial2</h2>
 <h4 data-end="80" data-start="71">教學目的</h4>
 <ul data-end="384" data-start="81">
 <li data-end="191" data-start="81">
@@ -206,8 +206,124 @@
 </li>
 <li data-end="3126" data-start="2987">
 <p data-end="3126" data-start="2990">結論：經過本章學習，能夠基於剛體 (Solid) 創建簡單環境、從場景樹視圖新增節點並修改欄位，熟悉了如 Solid、Shape、Sphere、Box 節點與 DEF-USE 機制。</p>
+<img alt="" height="202" src="/images/2.gif" width="385"/></li>
+</ol>
+<h2>Tutorial3</h2>
+<h4 data-end="142" data-start="133">教學目的</h4>
+<ul data-end="571" data-start="143">
+<li data-end="277" data-start="143">
+<p data-end="277" data-start="145">本章的目的是學習 Webots 中與 <strong data-end="182" data-start="164">外觀（Appearance）</strong> 及 <strong data-end="201" data-start="185">照明（Lighting）</strong> 相關的節點，讓模擬環境更加真實。</p>
 </li>
-</ol><h2>Tutorial3</h2>
+<li data-end="373" data-start="278">
+<p data-end="373" data-start="280">學會設定物體的顏色、質感與反光特性，並瞭解不同光源對場景呈現的影響。理解良好的視覺外觀不僅影響美觀，也影響模擬中相機或感測器的運作（例如顏色辨識與循線功能）。</p>
+</li>
+<li data-end="571" data-start="481">
+<p data-end="571" data-start="483">教學結構延續前章，重點在環境視覺層面的提升與節點屬性設定。</p>
+</li>
+</ul>
+<hr data-end="576" data-start="573"/>
+<h4 data-end="589" data-start="578">重點內容整理</h4>
+<ul data-end="1375" data-start="590">
+<li data-end="698" data-start="590">
+<p data-end="698" data-start="592">從上章的 <code data-end="612" data-start="597">obstacles.wbt</code> 世界檔另存為新檔 <code data-end="638" data-start="622">appearance.wbt</code>。</p>
+</li>
+<li data-end="904" data-start="699">
+<p data-end="721" data-start="701">認識 Webots 中三種光源節點：</p>
+<ul data-end="904" data-start="724">
+<li data-end="767" data-start="724">
+<p data-end="767" data-start="726"><strong data-end="746" data-start="726">DirectionalLight</strong>：平行光（模擬太陽光），光線方向固定。</p>
+</li>
+<li data-end="808" data-start="770">
+<p data-end="808" data-start="772"><strong data-end="786" data-start="772">PointLight</strong>：點光源（如燈泡），光線向四面八方擴散。</p>
+</li>
+<li data-end="904" data-start="811">
+<p data-end="904" data-start="813"><strong data-end="826" data-start="813">SpotLight</strong>：聚光燈（如手電筒），有光錐角與方向。</p>
+</li>
+</ul>
+</li>
+<li data-end="1022" data-start="905">
+<p data-end="1022" data-start="907">使用 <strong data-end="937" data-start="910">TexturedBackgroundLight</strong> 節點，自動結合背景與光源，產生自然的全域光照效果。</p>
+</li>
+<li data-end="1253" data-start="1023">
+<p data-end="1071" data-start="1025">學習 <strong data-end="1042" data-start="1028">Appearance</strong> 與 <strong data-end="1062" data-start="1045">PBRAppearance</strong> 節點的差別：</p>
+<ul data-end="1253" data-start="1074">
+<li data-end="1109" data-start="1074">
+<p data-end="1109" data-start="1076"><strong data-end="1090" data-start="1076">Appearance</strong> 為傳統光照模型 。</p>
+</li>
+<li data-end="1253" data-start="1112">
+<p data-end="1253" data-start="1114"><strong data-end="1131" data-start="1114">PBRAppearance</strong> 採用物理式渲染模型 (Physically-Based Rendering, PBR)，提供更真實的金屬質感與粗糙表面效果。</p>
+</li>
+</ul>
+</li>
+<li data-end="1375" data-start="1254">
+<p data-end="1375" data-start="1256">可透過調整 <code data-end="1273" data-start="1262">baseColor</code>, <code data-end="1286" data-start="1275">metalness</code>, <code data-end="1299" data-start="1288">roughness</code> 屬性改變物體表面反射與亮度特性。</p>
+</li>
+</ul>
+<hr data-end="1380" data-start="1377"/>
+<h4 data-end="1393" data-start="1382">教學流程摘要</h4>
+<ol data-end="2395" data-start="1394">
+<li data-end="1533" data-start="1394">
+<p data-end="1533" data-start="1397">開啟上章完成的 <code data-end="1420" data-start="1405">obstacles.wbt</code>，並使用 <strong data-end="1450" data-start="1425">File → Save World As…</strong> 將其另存為 <code data-end="1473" data-start="1457">appearance.wbt</code>。</p>
+</li>
+<li data-end="1681" data-start="1534">
+<p data-end="1681" data-start="1537">確認場景樹中包含 <code data-end="1571" data-start="1546">TexturedBackgroundLight</code> 節點。此節點自帶方向光 (DirectionalLight) 與背景貼圖，能自動產生柔和的照明效果。</p>
+</li>
+<li data-end="1876" data-start="1682">
+<p data-end="1709" data-start="1685">若想手動控制照明，可新增 Light 節點：</p>
+<ul data-end="1876" data-start="1713">
+<li data-end="1771" data-start="1713">
+<p data-end="1771" data-start="1715">在根節點 (Root) 下新增 <strong data-end="1751" data-start="1731">DirectionalLight</strong> 或 <strong data-end="1768" data-start="1754">PointLight</strong>。</p>
+</li>
+<li data-end="1876" data-start="1775">
+<p data-end="1876" data-start="1777">可調整 <code data-end="1788" data-start="1781">color</code>、<code data-end="1800" data-start="1789">intensity</code>、<code data-end="1812" data-start="1801">direction</code> 等屬性。</p>
+</li>
+</ul>
+</li>
+<li data-end="2044" data-start="1877">
+<p data-end="1906" data-start="1880">選取牆壁的 <code data-end="1893" data-start="1886">Shape</code> 節點，新增外觀設定：</p>
+<ul data-end="2044" data-start="1910">
+<li data-end="1954" data-start="1910">
+<p data-end="1954" data-start="1912">在 <code data-end="1926" data-start="1914">appearance</code> 欄位選擇新增 <strong data-end="1951" data-start="1934">PBRAppearance</strong>。</p>
+</li>
+<li data-end="2044" data-start="1958">
+<p data-end="2044" data-start="1960">修改 <code data-end="1974" data-start="1963">baseColor</code> 為淡藍色或其他色彩。</p>
+</li>
+</ul>
+</li>
+<li data-end="2211" data-start="2045">
+<p data-end="2057" data-start="2048">調整反光屬性：</p>
+<ul data-end="2211" data-start="2061">
+<li data-end="2095" data-start="2061">
+<p data-end="2095" data-start="2063">設定 <code data-end="2077" data-start="2066">metalness</code>（金屬感）為 0～1 間的數值。</p>
+</li>
+<li data-end="2133" data-start="2099">
+<p data-end="2133" data-start="2101">設定 <code data-end="2115" data-start="2104">roughness</code>（粗糙度）為 0～1 間的數值。</p>
+</li>
+<li data-end="2211" data-start="2137">
+<p data-end="2211" data-start="2139">觀察場景中反光與陰影變化。</p>
+</li>
+</ul>
+</li>
+<li data-end="2304" data-start="2212">
+<p data-end="2304" data-start="2215">可以為地板或牆壁加入不同顏色與反光設定，模擬出不同材質效果。</p>
+</li>
+<li data-end="2395" data-start="2305">
+<p data-end="2395" data-start="2308">保存世界檔，點擊 Play 以檢視最終的照明與外觀效果。</p>
+</li>
+</ol>
+<hr data-end="2400" data-start="2397"/>
+<h4 data-end="2409" data-start="2402">結論</h4>
+<ul data-end="2715" data-start="2410">
+<li data-end="2508" data-start="2410">
+<p data-end="2508" data-start="2412">學會在 Webots 中使用光源與外觀節點，創建更具真實感的模擬環境。</p>
+</li>
+<li data-end="2618" data-start="2509">
+<p data-end="2618" data-start="2511">透過 <strong data-end="2531" data-start="2514">PBRAppearance</strong> 調整顏色、金屬度與粗糙度，可以精確控制物體的視覺效果。</p>
+</li>
+<li data-end="2715" data-start="2619">
+<p data-end="2715" data-start="2621">理解光源數量與渲染品質之間的平衡，能協助建立兼顧美觀與效能的模擬場景。</p>
+<img alt="" height="259" src="/images/3.png" width="375"/></li>
+</ul>
 <h2>Tutorial4</h2>
 <h2>Tutorial5</h2>
 <h2>Tutorial6</h2>
